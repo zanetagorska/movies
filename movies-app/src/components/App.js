@@ -4,7 +4,7 @@ import { login } from '../redux/auth/reducer';
 
 class App extends Component {
 	state = {
-		email: '',
+		login: '',
 		password: ''
 	};
 
@@ -19,9 +19,9 @@ class App extends Component {
 				<form onSubmit={this.handleSubmit}>
 					<input
 						type="email"
-						value={this.state.email}
-						placeholder="email"
-						onChange={(e) => this.setState({ email: e.target.value })}
+						value={this.state.login}
+						placeholder="login"
+						onChange={(e) => this.setState({ login: e.target.value })}
 					/>
 					<input
 						type="password"
