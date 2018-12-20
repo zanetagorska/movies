@@ -5,8 +5,7 @@ function* login(action) {
 	try {
 		const response = yield call(loginUser, action.user);
 		yield put({ type: 'LOGIN_SUCCESS' });
-		yield console.log(response.data.token);
-		//TODO save in sessionStorage
+		yield window.sessionStorage.setItem('token', response.data.token);
 	} catch (e) {
 		yield put({ type: 'LOGIN_FAILURE' });
 	}
