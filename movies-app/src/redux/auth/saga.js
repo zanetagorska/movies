@@ -7,7 +7,7 @@ function* login(action) {
 		yield put({ type: 'LOGIN_SUCCESS' });
 		yield window.sessionStorage.setItem('token', response.data.token);
 	} catch (e) {
-		yield put({ type: 'LOGIN_FAILURE' });
+		yield put({ type: 'LOGIN_FAILURE', error: e.response.status });
 	}
 }
 

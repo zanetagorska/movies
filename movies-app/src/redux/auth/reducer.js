@@ -1,16 +1,16 @@
 const INITIAL_STATE = {
-	isLogin: null
+	isLogin: null,
+	errorMessage: null
 };
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case 'LOGIN':
-			return { ...state };
+		case 'RESET_LOGIN':
+			return { ...state, errorMessage: null };
 		case 'LOGIN_SUCCESS':
-			return { ...state, isLogin: true };
+			return { ...state, isLogin: true, errorMessage: null };
 		case 'LOGIN_FAILURE':
-			console.log(action);
-			return { ...state, isLogin: false };
+			return { ...state, isLogin: false, errorMessage: 'Podano niepoprawne dane. Proszę spróbować ponownie' };
 		default:
 			return state;
 	}
@@ -19,4 +19,8 @@ export default (state = INITIAL_STATE, action) => {
 export const login = (user) => ({
 	type: 'LOGIN',
 	user
+});
+
+export const resetLogin = () => ({
+	type: 'RESET_LOGIN'
 });
