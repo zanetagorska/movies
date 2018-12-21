@@ -1,7 +1,31 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login, resetLogin } from '../../redux/auth/reducer';
 import PropTypes from 'prop-types';
+import Styled from 'styled-components';
+
+const Container = Styled.div`
+  background: #333;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
+const Heading = Styled.h2`
+	margin-top: 0;
+`;
+
+const Form = Styled.form`
+	background: #fff;
+	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+`;
+
+const Field = Styled.input`
+	margin-bottom: 0.5rem;
+`;
 
 class Login extends Component {
 	state = {
@@ -23,24 +47,25 @@ class Login extends Component {
 
 	render() {
 		return (
-			<Fragment>
-				<form onSubmit={this.handleSubmit}>
-					<input
+			<Container>
+				<Form onSubmit={this.handleSubmit}>
+					<Heading>Zaloguj się</Heading>
+					<Field
 						type="email"
 						value={this.state.login}
 						placeholder="login"
-						onChange={(e) => this.handleChange({ login: e.target.value })}
+						onChange={({ target }) => this.handleChange({ login: target.value })}
 					/>
-					<input
+					<Field
 						type="password"
 						value={this.state.password}
 						placeholder="password"
-						onChange={(e) => this.handleChange({ password: e.target.value })}
+						onChange={({ target }) => this.handleChange({ password: target.value })}
 					/>
 					<button type="submit">Zaloguj</button>
-				</form>
+				</Form>
 				{this.props.errorMessage}
-			</Fragment>
+			</Container>
 		);
 	}
 }

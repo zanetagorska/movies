@@ -6,6 +6,7 @@ import rootReducer from './redux/rootReducer';
 import App from './components/App';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './redux/rootSaga';
+import 'normalize.css';
 
 const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
