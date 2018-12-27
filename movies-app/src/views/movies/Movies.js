@@ -4,8 +4,15 @@ import { connect } from 'react-redux';
 import { fetchMovies } from '../../redux/movies/reducer';
 import Styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import queryString from 'query-string';
+import { history } from '../../utils/history';
 
-const tableHeaders = [ 'Number', 'Title', 'Year', 'Metascore' ];
+const tableHeaders = [
+	{ name: 'Number' },
+	{ name: 'Title', sortBy: 'title' },
+	{ name: 'Year', sortBy: 'year' },
+	{ name: 'Metascore', sortBy: 'metascore' }
+];
 const Table = Styled.table`
 	border-collapse: collapse;
 	width: 100%;
@@ -27,17 +34,80 @@ const Tr = Styled.tr`
 `;
 
 class Movies extends Component {
+	state = {
+		activeFilter: null
+	};
+
 	componentDidMount() {
-		this.props.fetchMovies({ test: 'test' });
+		this.fetchMovies();
+		const params = queryString.parse(window.location.search);
+		if (params.sortBy) {
+			this.setState({ activeFilter: params.sortBy });
+		}
 	}
 
+	fetchMovies() {
+		const params = queryString.parse(window.location.search);
+		this.props.fetchMovies(params);
+	}
+	//Todo block when user click anothertime
+
 	renderHeaders() {
-		const headers = tableHeaders.map((header, key) => <th key={key}>{header}</th>);
+		const headers = tableHeaders.map((header) => {
+			if (header.sortBy) {
+				return this.renderFilterHeader(header);
+			}
+			return <th key={header.name}>{header.name}</th>;
+		});
 		return (
 			<thead>
 				<Tr>{headers}</Tr>
 			</thead>
 		);
+	}
+
+	renderFilterHeader = (header) => (
+		<th
+			onClick={() => {
+				this.setState({ activeFilter: header.sortBy });
+				this.changeSearchParams({ sortBy: header.sortBy });
+				this.fetchMovies();
+			}}
+			key={header.name}
+		>
+			{header.name}
+			{this.state.activeFilter === header.sortBy && (
+				<span>
+					<button
+						onClick={() => {
+							this.changeSearchParams({ sortDir: -1 });
+							this.fetchMovies();
+						}}
+					>
+						/\
+					</button>
+					<button
+						onClick={() => {
+							this.changeSearchParams({ sortDir: 1 });
+							this.fetchMovies();
+						}}
+					>
+						\/
+					</button>
+				</span>
+			)}
+		</th>
+	);
+
+	changeSearchParams(paramsToAdd) {
+		const params = queryString.parse(window.location.search);
+
+		for (let key in paramsToAdd) {
+			params[key] = paramsToAdd[key];
+		}
+
+		const newPath = queryString.stringify(params);
+		history.push(`/?${newPath}`);
 	}
 
 	renderBody() {

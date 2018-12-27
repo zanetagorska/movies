@@ -7,9 +7,9 @@ import Movies from './views/movies/Movies';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './redux/rootSaga';
 import 'normalize.css';
-import createBrowserHistory from 'history/createBrowserHistory';
 import { Router, Route } from 'react-router';
 import Login from './views/login/Login';
+import { history } from './utils/history';
 
 const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -17,7 +17,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(sagaMiddleware)));
 sagaMiddleware.run(rootSaga);
 
-const history = createBrowserHistory();
 const token = sessionStorage.getItem('token');
 
 render(
