@@ -24,7 +24,8 @@ render(
 	<Provider store={store}>
 		<Router history={history}>
 			<Fragment>
-				<Route path="/" render={() => (token ? <Movies /> : <Login />)} />
+				<Route path="/" exact render={() => (token ? <Movies /> : <Login />)} />
+				<Route path="/movie/:id" />
 			</Fragment>
 		</Router>
 	</Provider>,

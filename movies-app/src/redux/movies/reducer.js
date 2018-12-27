@@ -1,13 +1,11 @@
-const INITIAL_STATE = {
-	collection: []
-};
+const INITIAL_STATE = [];
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case 'FETCH_MOVIES_SUCCESS':
-			return { ...state, collection: action.movies };
+			return [ ...state, ...action.movies ];
 		case 'FETCH_MOVIES_FAILURE':
-			return { ...state };
+			return state;
 		default:
 			return state;
 	}
