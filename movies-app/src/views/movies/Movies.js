@@ -2,36 +2,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchMovies } from '../../redux/movies/reducer';
-import Styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import { history } from '../../utils/history';
-
-const tableHeaders = [
-	{ name: 'Number' },
-	{ name: 'Title', sortBy: 'title' },
-	{ name: 'Year', sortBy: 'year' },
-	{ name: 'Metascore', sortBy: 'metascore' }
-];
-const Table = Styled.table`
-	border-collapse: collapse;
-	width: 100%;
-`;
-
-const Td = Styled.td`
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-`;
-const Tr = Styled.tr`
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-
-	&:nth-child(even) {
-		background-color: #dddddd;
-	}
-`;
+import Table from './Table';
+import Pagination from './Pagination';
 
 class Movies extends Component {
 	state = {
@@ -50,54 +24,6 @@ class Movies extends Component {
 		const params = queryString.parse(window.location.search);
 		this.props.fetchMovies(params);
 	}
-	//Todo block when user click anothertime
-
-	renderHeaders() {
-		const headers = tableHeaders.map((header) => {
-			if (header.sortBy) {
-				return this.renderFilterHeader(header);
-			}
-			return <th key={header.name}>{header.name}</th>;
-		});
-		return (
-			<thead>
-				<Tr>{headers}</Tr>
-			</thead>
-		);
-	}
-
-	renderFilterHeader = (header) => (
-		<th
-			onClick={() => {
-				this.setState({ activeFilter: header.sortBy });
-				this.changeSearchParams({ sortBy: header.sortBy });
-				this.fetchMovies();
-			}}
-			key={header.name}
-		>
-			{header.name}
-			{this.state.activeFilter === header.sortBy && (
-				<span>
-					<button
-						onClick={() => {
-							this.changeSearchParams({ sortDir: -1 });
-							this.fetchMovies();
-						}}
-					>
-						/\
-					</button>
-					<button
-						onClick={() => {
-							this.changeSearchParams({ sortDir: 1 });
-							this.fetchMovies();
-						}}
-					>
-						\/
-					</button>
-				</span>
-			)}
-		</th>
-	);
 
 	changeSearchParams(paramsToAdd) {
 		const params = queryString.parse(window.location.search);
@@ -108,30 +34,45 @@ class Movies extends Component {
 
 		const newPath = queryString.stringify(params);
 		history.push(`/?${newPath}`);
+		this.fetchMovies();
 	}
 
-	renderBody() {
-		const body = this.props.movies.map((movie, key) => (
-			<Tr key={key}>
-				<Td>{key}</Td>
-				<Td>
-					<Link to={`/movie/${movie._id}`}>{movie.title}</Link>
-				</Td>
-				<Td>{movie.year}</Td>
-				<Td>{movie.metascore}</Td>
-			</Tr>
-		));
-		return <tbody>{body}</tbody>;
-	}
+	onHeaderClick = (header) => {
+		this.setState({ activeFilter: header.sortBy });
+		this.changeSearchParams({ sortBy: header.sortBy });
+	};
+
+	onSortButtonClick = (sortDir) => {
+		this.changeSearchParams({ sortDir: sortDir });
+	};
+
+	onOptionClick = (value) => {
+		this.changeSearchParams({ limit: value, page: 1 });
+	};
+
+	onPageClick = (number) => {
+		this.changeSearchParams({ page: number });
+	};
 
 	render() {
+		const params = queryString.parse(window.location.search);
 		return (
 			<Fragment>
 				<h2>Movies</h2>
-				<Table>
-					{this.renderHeaders()}
-					{this.renderBody()}
-				</Table>
+				<Table
+					movies={this.props.movies}
+					activeFilter={this.state.activeFilter}
+					onHeaderClick={this.onHeaderClick}
+					onSortButtonClick={this.onSortButtonClick}
+				/>
+				<label>Ilość wyników </label>
+				<select onChange={({ target }) => this.onOptionClick(target.value)}>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="5">5</option>
+					<option value="10">10</option>
+				</select>
+				<Pagination limit={params.limit} page={Number(params.page)} onPageClick={this.onPageClick} />
 			</Fragment>
 		);
 	}
