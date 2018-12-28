@@ -61,11 +61,11 @@ class Table extends Component {
 	);
 
 	renderBody() {
-		const body = this.props.movies.map((movie, key) => (
+		const body = this.props.collection.map((movie, key) => (
 			<Tr key={key}>
 				<Td>{key + 1}</Td>
 				<Td>
-					<Link to={`/movie/${movie._id}`}>{movie.title}</Link>
+					<Link to={`/movie/${movie.imdbId}`}>{movie.title}</Link>
 				</Td>
 				<Td>{movie.year}</Td>
 				<Td>{movie.metascore}</Td>

@@ -60,7 +60,7 @@ class Movies extends Component {
 			<Fragment>
 				<h2>Movies</h2>
 				<Table
-					movies={this.props.movies}
+					collection={this.props.collection}
 					activeFilter={this.state.activeFilter}
 					onHeaderClick={this.onHeaderClick}
 					onSortButtonClick={this.onSortButtonClick}
@@ -81,7 +81,7 @@ class Movies extends Component {
 Movies.propTypes = {};
 
 const mapStateToProps = (state) => ({
-	movies: state.movies
+	collection: state.movies.collection
 });
 
 export default connect(mapStateToProps, { fetchMovies })(Movies);
