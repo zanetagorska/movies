@@ -4,15 +4,12 @@ import Actor from './Actor';
 import { connect } from 'react-redux';
 import { fetchMovie } from '../../redux/movies/reducer';
 import { fetchActor } from '../../redux/actors/reducer';
+import { withAuth } from '../../hoc/withAuth';
 
 class Movie extends Component {
 	state = {
 		isModalOpen: false
 	};
-
-	componentDidMount() {
-		this.props.fetchMovie(this.props.match.params.imdbId);
-	}
 
 	showActorDetails = (imdbId) => {
 		this.setState({ isModalOpen: true });
@@ -70,4 +67,4 @@ const mapStateToProps = (state) => ({
 	movie: state.movies.movie
 });
 
-export default connect(mapStateToProps, { fetchMovie, fetchActor })(Movie);
+export default withAuth(connect(mapStateToProps, { fetchMovie, fetchActor })(Movie));

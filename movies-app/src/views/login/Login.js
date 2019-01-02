@@ -64,7 +64,7 @@ class Login extends Component {
 					/>
 					<button type="submit">Zaloguj</button>
 				</Form>
-				{this.props.errorMessage}
+				{this.props.error}
 			</Container>
 		);
 	}
@@ -77,7 +77,8 @@ Login.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-	errorMessage: state.auth.errorMessage
+	error: state.auth.errorMessage,
+	isLogin: state.auth.isLogin
 });
 
 export default connect(mapStateToProps, { login, resetLogin })(Login);

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchMovies } from '../../redux/movies/reducer';
 import queryString from 'query-string';
-import { history } from '../../utils/history';
 import Table from './Table';
 import Pagination from './Pagination';
+import { withAuth } from '../../hoc/withAuth';
 
 class Movies extends Component {
 	state = {
@@ -20,6 +20,11 @@ class Movies extends Component {
 		}
 	}
 
+	showActorDetails = (imdbId) => {
+		this.setState({ isModalOpen: true });
+		this.props.fetchActor(imdbId);
+	};
+
 	fetchMovies() {
 		const params = queryString.parse(window.location.search);
 		this.props.fetchMovies(params);
@@ -33,7 +38,7 @@ class Movies extends Component {
 		}
 
 		const newPath = queryString.stringify(params);
-		history.push(`/?${newPath}`);
+		this.props.history.push(`/?${newPath}`);
 		this.fetchMovies();
 	}
 
@@ -78,10 +83,23 @@ class Movies extends Component {
 	}
 }
 
-Movies.propTypes = {};
+Movies.propTypes = {
+	collection: PropTypes.arrayOf(
+		PropTypes.shape({
+			_id: PropTypes.string,
+			imdbId: PropTypes.string,
+			title: PropTypes.string,
+			director: PropTypes.string,
+			year: PropTypes.number,
+			metascore: PropTypes.number,
+			actors: PropTypes.arrayOf(PropTypes.shape({ imdbId: PropTypes.string, name: PropTypes.string })),
+			posterUrl: PropTypes.strin
+		})
+	)
+};
 
 const mapStateToProps = (state) => ({
 	collection: state.movies.collection
 });
 
-export default connect(mapStateToProps, { fetchMovies })(Movies);
+export default withAuth(connect(mapStateToProps, { fetchMovies })(Movies));
