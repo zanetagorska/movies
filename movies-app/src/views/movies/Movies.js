@@ -70,13 +70,16 @@ class Movies extends Component {
 					onHeaderClick={this.onHeaderClick}
 					onSortButtonClick={this.onSortButtonClick}
 				/>
-				<label>Ilość wyników </label>
-				<select onChange={({ target }) => this.onOptionClick(target.value)}>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="5">5</option>
-					<option value="10">10</option>
-				</select>
+
+				<label>Ilość wyników: </label>
+				<div className="select">
+					<select onChange={({ target }) => this.onOptionClick(target.value)}>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="5">5</option>
+						<option value="10">10</option>
+					</select>
+				</div>
 				<Pagination limit={params.limit} page={Number(params.page)} onPageClick={this.onPageClick} />
 			</div>
 		);
