@@ -5,11 +5,16 @@ import { connect } from 'react-redux';
 import { fetchMovie } from '../../redux/movies/reducer';
 import { fetchActor } from '../../redux/actors/reducer';
 import { withAuth } from '../../hoc/withAuth';
+import Modal from '../../components/_common/Modal';
 
 class Movie extends Component {
 	state = {
 		isModalOpen: false
 	};
+
+	componentDidMount() {
+		this.props.fetchMovie(this.props.match.params.imdbId);
+	}
 
 	showActorDetails = (imdbId) => {
 		this.setState({ isModalOpen: true });
@@ -45,7 +50,11 @@ class Movie extends Component {
 				<a href={`https://www.imdb.com/title/${movie.imdbId}/`} target="_blank" rel="noopener noreferrer">
 					Przejdź do serwisu IMDB
 				</a>
-				{this.state.isModalOpen && <Actor actor={this.props.actor} />}
+				{this.state.isModalOpen && (
+					<Modal handleClose={() => this.setState({ isModalOpen: false })}>
+						<Actor actor={this.props.actor} />
+					</Modal>
+				)}
 			</section>
 		);
 	}
