@@ -12,19 +12,11 @@ const Container = Styled.div`
 	justify-content: center;
 `;
 
-const Heading = Styled.h2`
-	margin-top: 0;
-`;
-
 const Form = Styled.form`
 	background: #fff;
 	padding: 2rem;
 	display: flex;
 	flex-direction: column;
-`;
-
-const Field = Styled.input`
-	margin-bottom: 0.5rem;
 `;
 
 class Login extends Component {
@@ -49,20 +41,38 @@ class Login extends Component {
 		return (
 			<Container>
 				<Form onSubmit={this.handleSubmit}>
-					<Heading>Zaloguj się</Heading>
-					<Field
+					<h2 className="subtitle is-2">Zaloguj się</h2>
+					<div
+						className="field"
 						type="email"
 						value={this.state.login}
 						placeholder="login"
 						onChange={({ target }) => this.handleChange({ login: target.value })}
-					/>
-					<Field
+					>
+						<p className="control has-icons-left">
+							<input className="input" type="email" placeholder="Email" />
+							<span className="icon is-small is-left">
+								<i className="fas fa-envelope" />
+							</span>
+						</p>
+					</div>
+					<div
+						className="field"
 						type="password"
 						value={this.state.password}
 						placeholder="password"
 						onChange={({ target }) => this.handleChange({ password: target.value })}
-					/>
-					<button type="submit">Zaloguj</button>
+					>
+						<p className="control has-icons-left">
+							<input className="input" type="password" placeholder="Password" />
+							<span className="icon is-small is-left">
+								<i className="fas fa-lock" />
+							</span>
+						</p>
+					</div>
+					<button type="submit" class="button is-success">
+						Zaloguj
+					</button>
 				</Form>
 				{this.props.error}
 			</Container>

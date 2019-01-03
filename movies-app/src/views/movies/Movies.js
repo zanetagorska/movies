@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchMovies } from '../../redux/movies/reducer';
@@ -62,8 +62,8 @@ class Movies extends Component {
 	render() {
 		const params = queryString.parse(window.location.search);
 		return (
-			<Fragment>
-				<h2>Movies</h2>
+			<div className="container">
+				<h2 className="title is-2">Movies</h2>
 				<Table
 					collection={this.props.collection}
 					activeFilter={this.state.activeFilter}
@@ -78,7 +78,7 @@ class Movies extends Component {
 					<option value="10">10</option>
 				</select>
 				<Pagination limit={params.limit} page={Number(params.page)} onPageClick={this.onPageClick} />
-			</Fragment>
+			</div>
 		);
 	}
 }
