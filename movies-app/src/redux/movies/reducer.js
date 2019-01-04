@@ -27,7 +27,7 @@ export default (state = INITIAL_STATE, action) => {
 };
 
 export const fetchMovies = (params) => ({
-	type: 'FETCH_MOVIES',
+	type: 'FETCH_MOVIES_REQUEST',
 	params
 });
 

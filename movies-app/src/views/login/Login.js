@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { login, resetLogin } from '../../redux/auth/reducer';
 import PropTypes from 'prop-types';
 import Styled from 'styled-components';
+import { createLoadingSelector } from '../../redux/loading/selector';
 
 const Container = Styled.div`
   background: #333;
@@ -70,7 +71,7 @@ class Login extends Component {
 							</span>
 						</p>
 					</div>
-					<button type="submit" class="button is-success">
+					<button type="submit" className="button is-success">
 						Zaloguj
 					</button>
 				</Form>
@@ -86,9 +87,12 @@ Login.propTypes = {
 	resetLogin: PropTypes.func
 };
 
+const loadingSelector = createLoadingSelector([ 'LOGIN' ]);
+
 const mapStateToProps = (state) => ({
 	error: state.auth.errorMessage,
-	isLogin: state.auth.isLogin
+	isLogin: state.auth.isLogin,
+	isFetching: loadingSelector(state)
 });
 
 export default connect(mapStateToProps, { login, resetLogin })(Login);
