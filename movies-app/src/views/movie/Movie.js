@@ -6,6 +6,7 @@ import { fetchMovie } from '../../redux/movies/reducer';
 import { fetchActor } from '../../redux/actors/reducer';
 import { withAuth } from '../../hoc/withAuth';
 import Modal from '../../components/_common/Modal';
+import { createLoadingSelector } from '../../redux/loading/selector';
 
 class Movie extends Component {
 	state = {
@@ -31,6 +32,9 @@ class Movie extends Component {
 	};
 
 	render() {
+		if (this.props.isFetching) {
+			return <div>loading...</div>;
+		}
 		const { movie } = this.props;
 		return (
 			<section>
@@ -72,8 +76,12 @@ Movie.propTypes = {
 		posterUrl: PropTypes.string
 	})
 };
+
+const loadingSelector = createLoadingSelector([ 'FETCH_MOVIE' ]);
+
 const mapStateToProps = (state) => ({
-	movie: state.movies.movie
+	movie: state.movies.movie,
+	isFetching: loadingSelector(state)
 });
 
 export default withAuth(connect(mapStateToProps, { fetchMovie, fetchActor })(Movie));

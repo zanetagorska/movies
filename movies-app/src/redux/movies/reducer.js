@@ -32,6 +32,6 @@ export const fetchMovies = (params) => ({
 });
 
 export const fetchMovie = (imdbId) => ({
-	type: 'FETCH_MOVIE',
+	type: 'FETCH_MOVIE_REQUEST',
 	imdbId
 });

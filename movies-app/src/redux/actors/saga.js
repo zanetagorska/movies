@@ -12,5 +12,5 @@ function* watchFetchActor(action) {
 }
 
 export default function* actor() {
-	yield takeLatest('FETCH_ACTOR', watchFetchActor);
+	yield takeLatest('FETCH_ACTOR_REQUEST', watchFetchActor);
 }

@@ -14,5 +14,5 @@ function* login(action) {
 }
 
 export default function* auth() {
-	yield takeLatest('LOGIN', login);
+	yield takeLatest('LOGIN_REQUEST', login);
 }

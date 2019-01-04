@@ -22,6 +22,6 @@ export default (state = INITIAL_STATE, action) => {
 };
 
 export const fetchActor = (imdbId) => ({
-	type: 'FETCH_ACTOR',
+	type: 'FETCH_ACTOR_REQUEST',
 	imdbId
 });

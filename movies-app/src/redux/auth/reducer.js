@@ -17,7 +17,7 @@ export default (state = INITIAL_STATE, action) => {
 };
 
 export const login = (user) => ({
-	type: 'LOGIN',
+	type: 'LOGIN_REQUEST',
 	user
 });
 

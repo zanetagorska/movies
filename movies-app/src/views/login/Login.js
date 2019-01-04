@@ -39,6 +39,8 @@ class Login extends Component {
 	};
 
 	render() {
+		const { isFetching } = this.props;
+
 		return (
 			<Container>
 				<Form onSubmit={this.handleSubmit}>
@@ -71,7 +73,7 @@ class Login extends Component {
 							</span>
 						</p>
 					</div>
-					<button type="submit" className="button is-success">
+					<button type="submit" className={`button is-success ${isFetching && 'is-loading'}`}>
 						Zaloguj
 					</button>
 				</Form>
