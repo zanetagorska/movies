@@ -1,10 +1,12 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { fetchMovies, fetchMovie } from './api';
+import { delay } from 'redux-saga';
 
 function* watchFetchMovies(action) {
 	try {
 		const response = yield call(fetchMovies, action.params);
 		const movies = response.data.collection;
+		yield delay(2000);
 		yield put({ type: 'FETCH_MOVIES_SUCCESS', movies });
 	} catch (e) {
 		yield put({ type: 'FETCH_MOVIES_FAILURE', error: e.response.status });

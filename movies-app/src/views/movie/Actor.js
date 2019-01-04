@@ -1,25 +1,29 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createLoadingSelector } from '../../redux/loading/selector';
+import Loader from '../../components/_common/Loader';
 
 const Actor = ({ actor, isFetching }) => {
-	if (isFetching) {
-		return <div>loading...</div>;
-	}
 	return (
 		<section>
-			<h2>{actor.name}</h2>
-			<p>
-				<span>Birthday: {actor.birthday}</span>
-				<br />
-				<span>Country: {actor.birthday}</span>
-				<br />
-			</p>
-			<img src={actor.photoUrl} alt="Actor" />
-			<a href={`https://www.imdb.com/name/${actor.imdbId}/`} target="_blank" rel="noopener noreferrer">
-				Przejdź do serwisu IMDB
-			</a>
+			{isFetching ? (
+				<Loader />
+			) : (
+				<Fragment>
+					<h2>{actor.name}</h2>
+					<p>
+						<span>Birthday: {actor.birthday}</span>
+						<br />
+						<span>Country: {actor.birthday}</span>
+						<br />
+					</p>
+					<img src={actor.photoUrl} alt="Actor" />
+					<a href={`https://www.imdb.com/name/${actor.imdbId}/`} target="_blank" rel="noopener noreferrer">
+						Przejdź do serwisu IMDB
+					</a>
+				</Fragment>
+			)}
 		</section>
 	);
 };

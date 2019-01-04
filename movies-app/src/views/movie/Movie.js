@@ -7,6 +7,7 @@ import { fetchActor } from '../../redux/actors/reducer';
 import { withAuth } from '../../hoc/withAuth';
 import Modal from '../../components/_common/Modal';
 import { createLoadingSelector } from '../../redux/loading/selector';
+import Loader from '../../components/_common/Loader';
 
 class Movie extends Component {
 	state = {
@@ -33,7 +34,7 @@ class Movie extends Component {
 
 	render() {
 		if (this.props.isFetching) {
-			return <div>loading...</div>;
+			return <Loader />;
 		}
 		const { movie } = this.props;
 		return (

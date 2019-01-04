@@ -7,6 +7,7 @@ import Table from './Table';
 import Pagination from './Pagination';
 import { withAuth } from '../../hoc/withAuth';
 import { createLoadingSelector } from '../../redux/loading/selector';
+import Loader from '../../components/_common/Loader';
 
 class Movies extends Component {
 	state = {
@@ -62,7 +63,7 @@ class Movies extends Component {
 
 	render() {
 		if (this.props.isFetching) {
-			return <div>loading...</div>;
+			return <Loader />;
 		}
 		const params = queryString.parse(window.location.search);
 		return (
