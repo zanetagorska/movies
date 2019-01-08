@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Actor from './Actor';
 import { connect } from 'react-redux';
@@ -9,61 +9,58 @@ import Modal from '../../components/_common/Modal';
 import { createLoadingSelector } from '../../redux/loading/selector';
 import Loader from '../../components/_common/Loader';
 
-class Movie extends Component {
-	state = {
-		isModalOpen: false
+const Movie = (props) => {
+	const [ isModalOpen, setModal ] = useState(false);
+
+	useEffect(() => {
+		props.fetchMovie(props.match.params.imdbId);
+	}, []);
+
+	const showActorDetails = (imdbId) => {
+		setModal(true);
+		fetchActor(imdbId);
 	};
 
-	componentDidMount() {
-		this.props.fetchMovie(this.props.match.params.imdbId);
-	}
-
-	showActorDetails = (imdbId) => {
-		this.setState({ isModalOpen: true });
-		this.props.fetchActor(imdbId);
-	};
-
-	renderActors = () => {
-		const actors = this.props.movie.actors.map((actor) => (
-			<li onClick={() => this.showActorDetails(actor.imdbId)} key={actor.imdbId}>
+	const renderActors = () => {
+		const actors = props.movie.actors.map((actor) => (
+			<li onClick={() => showActorDetails(actor.imdbId)} key={actor.imdbId}>
 				{actor.name}
 			</li>
 		));
 		return <ul>{actors}</ul>;
 	};
 
-	render() {
-		if (this.props.isFetching) {
-			return <Loader />;
-		}
-		const { movie } = this.props;
-		return (
-			<section>
-				<h2>{movie.title}</h2>
-				<p>
-					<span>Director: {movie.director}</span>
-					<br />
-					<span>Year: {movie.year}</span>
-					<br />
-					<span>Metascore: {movie.metascore}</span>
-					<br />
-				</p>
-				<div>
-					<img src={movie.posterUrl} alt="Movie poster" />
-				</div>
-				{this.renderActors()}
-				<a href={`https://www.imdb.com/title/${movie.imdbId}/`} target="_blank" rel="noopener noreferrer">
-					Przejdź do serwisu IMDB
-				</a>
-				{this.state.isModalOpen && (
-					<Modal handleClose={() => this.setState({ isModalOpen: false })}>
-						<Actor actor={this.props.actor} />
-					</Modal>
-				)}
-			</section>
-		);
+	if (props.isFetching) {
+		return <Loader />;
 	}
-}
+
+	return (
+		<section>
+			<div>{props.movie.title}</div>
+			<h2>{props.movie.title}</h2>
+			<p>
+				<span>Director: {props.movie.director}</span>
+				<br />
+				<span>Year: {props.movie.year}</span>
+				<br />
+				<span>Metascore: {props.movie.metascore}</span>
+				<br />
+			</p>
+			<div>
+				<img src={props.movie.posterUrl} alt="Movie poster" />
+			</div>
+			{renderActors()}
+			<a href={`https://www.imdb.com/title/${props.movie.imdbId}/`} target="_blank" rel="noopener noreferrer">
+				Przejdź do serwisu IMDB
+			</a>
+			{isModalOpen && (
+				<Modal handleClose={() => setModal(false)}>
+					<Actor actor={props.actor} />
+				</Modal>
+			)}
+		</section>
+	);
+};
 
 Movie.propTypes = {
 	movie: PropTypes.shape({
